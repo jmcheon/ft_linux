@@ -50,19 +50,20 @@ set -xe
 # PK_BINUTILS='binutils-2.39'
 # PK_GCC='gcc-12.2.0'
 
-cd ${lfs}/sources
+cd ${LFS}/sources
 
-# m4-1.4.19		0.2 sbu	32mb
+
+# M4-1.4.19		0.2 SBU	32MB
 tar -xf m4-1.4.19.tar.xz
 echo 'start building  m4-1.4.19'
 pushd 'm4-1.4.19'
 
 ./configure --prefix=/usr   \
-            --host=$lfs_tgt \
+            --host=$LFS_TGT \
             --build=$(build-aux/config.guess)
 	
 make -j4
-make destdir=$lfs install
+make DESTDIR=$LFS install
 
 popd
 rm -rf 'm4-1.4.19'
@@ -70,7 +71,7 @@ rm -rf 'm4-1.4.19'
 
 
 
-# ncurses-6.3		0.7 sbu	50mb
+# Ncurses-6.3		0.7 SBU	50MB
 tar -xf ncurses-6.3.tar.gz
 echo 'start building  ncurses-6.3'
 pushd 'ncurses-6.3'
@@ -80,12 +81,12 @@ sed -i s/mawk// configure
 mkdir build
 pushd build
   ../configure
-  make -c include
-  make -c progs tic
+  make -C include
+  make -C progs tic
 popd
 
 ./configure --prefix=/usr                \
-            --host=$lfs_tgt              \
+            --host=$LFS_TGT              \
             --build=$(./config.guess)    \
             --mandir=/usr/share/man      \
             --with-manpage-format=normal \
@@ -97,10 +98,10 @@ popd
             --disable-stripping          \
             --enable-widec
 
-make -j4
 
-make destdir=$lfs tic_path=$(pwd)/build/progs/tic install
-echo "input(-lncursesw)" > $lfs/usr/lib/libncurses.so
+make -j4
+make DESTDIR=$LFS TIC_PATH=$(pwd)/build/progs/tic install
+echo "INPUT(-lncursesw)" > $LFS/usr/lib/libncurses.so
 
 popd
 rm -rf 'ncurses-6.3'
@@ -108,19 +109,20 @@ rm -rf 'ncurses-6.3'
 
 
 
-# bash-5.1.16		0.5 sbu	64mb
+# Bash-5.1.16		0.5 SBU	64MB
 tar -xf bash-5.1.16.tar.gz
 echo 'start building  bash-5.1.16'
 pushd 'bash-5.1.16'
 
 ./configure --prefix=/usr                   \
             --build=$(support/config.guess) \
-            --host=$lfs_tgt                 \
+            --host=$LFS_TGT                 \
             --without-bash-malloc
 
+
 make -j4
-make destdir=$lfs install
-ln -sv bash $lfs/bin/sh
+make DESTDIR=$LFS install
+ln -sv bash $LFS/bin/sh
 
 popd
 rm -rf 'bash-5.1.16'
@@ -128,24 +130,26 @@ rm -rf 'bash-5.1.16'
 
 
 
-# coreutils-9.1		0.6 sbu	163mb
+# Coreutils-9.1		0.6 SBU	163MB
 tar -xf coreutils-9.1.tar.xz
 echo 'start building  coreutils-9.1'
 pushd 'coreutils-9.1'
 
 ./configure --prefix=/usr                     \
-            --host=$lfs_tgt                   \
+            --host=$LFS_TGT                   \
             --build=$(build-aux/config.guess) \
             --enable-install-program=hostname \
             --enable-no-install-program=kill,uptime
 
-make -j4
-make destdir=$lfs install
 
-mv -v $lfs/usr/bin/chroot              $lfs/usr/sbin
-mkdir -pv $lfs/usr/share/man/man8
-mv -v $lfs/usr/share/man/man1/chroot.1 $lfs/usr/share/man/man8/chroot.8
-sed -i 's/"1"/"8"/'                    $lfs/usr/share/man/man8/chroot.8
+
+make -j4
+make DESTDIR=$LFS install
+
+mv -v $LFS/usr/bin/chroot              $LFS/usr/sbin
+mkdir -pv $LFS/usr/share/man/man8
+mv -v $LFS/usr/share/man/man1/chroot.1 $LFS/usr/share/man/man8/chroot.8
+sed -i 's/"1"/"8"/'                    $LFS/usr/share/man/man8/chroot.8
 
 popd
 rm -rf 'coreutils-9.1'
@@ -153,14 +157,14 @@ rm -rf 'coreutils-9.1'
 
 
 
-# diffutils-3.8		0.2 sbu	26mb
+# Diffutils-3.8		0.2 SBU	26MB
 tar -xf diffutils-3.8.tar.xz
 echo 'start building  diffutils-2.7'
 pushd 'diffutils-3.8'
 
-./configure --prefix=/usr --host=$lfs_tgt
+./configure --prefix=/usr --host=$LFS_TGT
 make -j4
-make destdir=$lfs install
+make DESTDIR=$LFS install
 
 popd
 rm -rf 'diffutils-3.8'
@@ -168,7 +172,7 @@ rm -rf 'diffutils-3.8'
 
 
 
-# file-5.42		0.2 sbu	34mb
+# File-5.42		0.2 SBU	34MB
 tar -xf file-5.42.tar.gz
 echo 'start building  file-5.42'
 pushd 'file-5.42'
@@ -182,13 +186,13 @@ pushd build
   make
 popd
 
-./configure --prefix=/usr --host=$lfs_tgt --build=$(./config.guess)
+./configure --prefix=/usr --host=$LFS_TGT --build=$(./config.guess)
 
-make file_compile=$(pwd)/build/src/file
+make FILE_COMPILE=$(pwd)/build/src/file
 
-make destdir=$lfs install
+make DESTDIR=$LFS install
 
-rm -v $lfs/usr/lib/libmagic.la
+rm -v $LFS/usr/lib/libmagic.la
 
 popd
 rm -rf 'file-5.42'
@@ -196,18 +200,19 @@ rm -rf 'file-5.42'
 
 
 
-# findutils-4.9.0	0.2 sbu	42mb
+# Findutils-4.9.0	0.2 SBU	42MB
 tar -xf findutils-4.9.0.tar.xz
 echo 'start building  findutils-4.9.0'
 pushd 'findutils-4.9.0'
 
 ./configure --prefix=/usr                   \
             --localstatedir=/var/lib/locate \
-            --host=$lfs_tgt                 \
+            --host=$LFS_TGT                 \
             --build=$(build-aux/config.guess)
 
+
 make -j4
-make destdir=$lfs install
+make DESTDIR=$LFS install
 
 popd
 rm -rf 'findutils-4.9.0'
@@ -215,19 +220,19 @@ rm -rf 'findutils-4.9.0'
 
 
 
-# gawk-5.1.1		0.2 sbu	45mb
+# Gawk-5.1.1		0.2 SBU	45MB
 tar -xf gawk-5.1.1.tar.xz
 echo 'start building  gawk-5.1.1'
 pushd 'gawk-5.1.1'
 
-sed -i 's/extras//' makefile.in
+sed -i 's/extras//' Makefile.in
 
 ./configure --prefix=/usr   \
-            --host=$lfs_tgt \
+            --host=$LFS_TGT \
             --build=$(build-aux/config.guess)
 
 make -j4
-make destdir=$lfs install
+make DESTDIR=$LFS install
 
 popd
 rm -rf 'gawk-5.1.1'
@@ -235,15 +240,15 @@ rm -rf 'gawk-5.1.1'
 
 
 
-# grep-3.7		0.2 sbu	25mb
+# Grep-3.7		0.2 SBU	25MB
 tar -xf grep-3.7.tar.xz
 echo 'start building  grep-3.7'
 pushd 'grep-3.7'
 
 ./configure --prefix=/usr   \
-            --host=$lfs_tgt
+            --host=$LFS_TGT
 make
-make destdir=$lfs install
+make DESTDIR=$LFS install
 
 popd
 rm -rf 'grep-3.7'
@@ -251,14 +256,14 @@ rm -rf 'grep-3.7'
 
 
 
-# gzip-1.12		0.1 sbu	11mb
+# Gzip-1.12		0.1 SBU	11MB
 tar -xf gzip-1.12.tar.xz
 echo 'start building  gzip-1.12'
 pushd 'gzip-1.12'
 
-./configure --prefix=/usr --host=$lfs_tgt
+./configure --prefix=/usr --host=$LFS_TGT
 make -j4
-make destdir=$lfs install
+make DESTDIR=$LFS install
 
 popd
 rm -rf 'gzip-1.12'
@@ -266,17 +271,17 @@ rm -rf 'gzip-1.12'
 
 
 
-# make-4.3		0.1 sbu	15mb
+# Make-4.3		0.1 SBU	15MB
 tar -xf make-4.3.tar.gz
 echo 'start building  make-4.3'
 pushd 'make-4.3'
 
 ./configure --prefix=/usr   \
             --without-guile \
-            --host=$lfs_tgt \
+            --host=$LFS_TGT \
             --build=$(build-aux/config.guess)
 make -j4
-make destdir=$lfs install
+make DESTDIR=$LFS install
 
 popd
 rm -rf 'make-4.3'
@@ -284,16 +289,16 @@ rm -rf 'make-4.3'
 
 
 
-# patch-2.7.6		0.1 sbu	12mb
+# Patch-2.7.6		0.1 SBU	12MB
 tar -xf patch-2.7.6.tar.xz
 echo 'start building  patch-2.7.6'
 pushd 'patch-2.7.6'
 
 ./configure --prefix=/usr   \
-            --host=$lfs_tgt \
+            --host=$LFS_TGT \
             --build=$(build-aux/config.guess)
 make -j4
-make destdir=$lfs install
+make DESTDIR=$LFS install
 
 popd
 rm -rf 'patch-2.7.6'
@@ -301,15 +306,15 @@ rm -rf 'patch-2.7.6'
 
 
 
-# sed-4.8		0.1 sbu	20mb
+# Sed-4.8		0.1 SBU	20MB
 tar -xf sed-4.8.tar.xz
 echo 'start building  sed-4.8'
 pushd 'sed-4.8'
 
 ./configure --prefix=/usr   \
-            --host=$lfs_tgt
+            --host=$LFS_TGT
 make -j4
-make destdir=$lfs install
+make DESTDIR=$LFS install
 
 popd
 rm -rf 'sed-4.8'
@@ -317,17 +322,16 @@ rm -rf 'sed-4.8'
 
 
 
-
-# tar-1.34		0.2 sbu	38mb
+# Tar-1.34		0.2 SBU	38MB
 tar -xf tar-1.34.tar.xz
 echo 'start building  tar-1.34'
 pushd 'tar-1.34'
 
 ./configure --prefix=/usr                     \
-            --host=$lfs_tgt                   \
+            --host=$LFS_TGT                   \
             --build=$(build-aux/config.guess)
 make -j4
-make destdir=$lfs install
+make DESTDIR=$LFS install
 
 popd
 rm -rf 'tar-1.34'
@@ -335,19 +339,19 @@ rm -rf 'tar-1.34'
 
 
 
-# xz-5.2.6		0.1 sbu 16mb
+# Xz-5.2.6		0.1 SBU 16MB
 tar -xf xz-5.2.6.tar.xz
 echo 'start building  xz-5.2.6'
 pushd 'xz-5.2.6'
 
 ./configure --prefix=/usr                     \
-            --host=$lfs_tgt                   \
+            --host=$LFS_TGT                   \
             --build=$(build-aux/config.guess) \
             --disable-static                  \
             --docdir=/usr/share/doc/xz-5.2.6
 make -j4
-make destdir=$lfs install
-rm -v $lfs/usr/lib/liblzma.la
+make DESTDIR=$LFS install
+rm -v $LFS/usr/lib/liblzma.la
 
 popd
 rm -rf 'xz-5.2.6'
@@ -368,7 +372,7 @@ cd       build
 ../configure                   \
     --prefix=/usr              \
     --build=$(../config.guess) \
-    --host=$lfs_tgt            \
+    --host=$LFS_TGT            \
     --disable-nls              \
     --enable-shared            \
     --enable-gprofng=no        \
@@ -376,8 +380,8 @@ cd       build
     --enable-64-bit-bfd
 
 make -j4
-make destdir=$lfs install
-rm -v $lfs/usr/lib/lib{bfd,ctf,ctf-nobfd,opcodes}.{a,la}
+make DESTDIR=$LFS install
+rm -v $LFS/usr/lib/lib{bfd,ctf,ctf-nobfd,opcodes}.{a,la}
 
 popd
 rm -rf 'binutils-2.39'
@@ -403,18 +407,18 @@ case $(uname -m) in
   ;;
 esac
 sed '/thread_header =/s/@.*@/gthr-posix.h/' \
-    -i libgcc/makefile.in libstdc++-v3/include/makefile.in
+    -i libgcc/Makefile.in libstdc++-v3/include/Makefile.in
 
 mkdir -v build
 cd       build
 
 ../configure                                       \
     --build=$(../config.guess)                     \
-    --host=$lfs_tgt                                \
-    --target=$lfs_tgt                              \
-    ldflags_for_target=-l$pwd/$lfs_tgt/libgcc      \
+    --host=$LFS_TGT                                \
+    --target=$LFS_TGT                              \
+    LDFLAGS_FOR_TARGET=-L$PWD/$LFS_TGT/libgcc      \
     --prefix=/usr                                  \
-    --with-build-sysroot=$lfs                      \
+    --with-build-sysroot=$LFS                      \
     --enable-initfini-array                        \
     --disable-nls                                  \
     --disable-multilib                             \
@@ -427,8 +431,8 @@ cd       build
     --enable-languages=c,c++
 
 make -j4
-make destdir=$lfs install
-ln -sv gcc $lfs/usr/bin/cc
+make DESTDIR=$LFS install
+ln -sv gcc $LFS/usr/bin/cc
 
 popd
 rm -rf 'gcc-12.2.0'
