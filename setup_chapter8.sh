@@ -107,7 +107,7 @@ echo "rootsbindir=/usr/sbin" > configparms
              --with-headers=/usr/include              \
              libc_cv_slibdir=/usr/lib
 
-make -j4
+make -j12
 #make check
 touch /etc/ld.so.conf
 sed '/test-installation/s@$(PERL)@echo not running@' -i ../Makefile
@@ -220,7 +220,7 @@ echo "Start building  ${PK_ZLIB}"
 pushd ${PK_ZLIB}
 
 ./configure --prefix=/usr
-make -j4
+make -j12
 #make check
 make install
 rm -fv /usr/lib/libz.a
@@ -243,7 +243,7 @@ sed -i "s@(PREFIX)/man@(PREFIX)/share/man@g" Makefile
 make -f Makefile-libbz2_so
 make clean
 
-make -j4
+make -j12
 make PREFIX=/usr install
 
 cp -av libbz2.so.* /usr/lib
@@ -271,7 +271,7 @@ pushd ${PK_XZ}
             --disable-static \
             --docdir=/usr/share/doc/xz-5.2.6
 
-make -j4
+make -j12
 #make check
 make install
 
@@ -304,7 +304,7 @@ echo "Start building  ${PK_FILE}"
 pushd ${PK_FILE}
 
 ./configure --prefix=/usr
-make -j4
+make -j12
 #make check
 make install
 
@@ -343,7 +343,7 @@ echo "Start building  ${PK_M4}"
 pushd ${PK_M4}
 
 ./configure --prefix=/usr
-make -j4
+make -j12
 #make check
 make install
 
@@ -359,7 +359,7 @@ echo "Start building  ${PK_BC}"
 pushd ${PK_BC}
 
 CC=gcc ./configure --prefix=/usr -G -O3 -r
-make -j4
+make -j12
 #make test
 make install
 
@@ -378,7 +378,7 @@ pushd ${PK_FLEX}
             --docdir=/usr/share/doc/flex-2.6.4 \
             --disable-static
 
-make -j4
+make -j12
 #make check
 make install
 ln -sv flex /usr/bin/lex
@@ -400,7 +400,7 @@ cd unix
 ./configure --prefix=/usr           \
             --mandir=/usr/share/man
 
-make -j4
+make -j12
 
 sed -e "s|$SRCDIR/unix|/usr/lib|" \
     -e "s|$SRCDIR|/usr/include|"  \
@@ -446,7 +446,7 @@ pushd ${PK_EXPECT}
             --mandir=/usr/share/man \
             --with-tclinclude=/usr/include
 
-make -j4
+make -j12
 #make test
 make install
 ln -svf expect5.45.4/libexpect5.45.4.so /usr/lib
@@ -523,7 +523,7 @@ pushd ${PK_GMP}
             --disable-static \
             --docdir=/usr/share/doc/gmp-6.2.1
 
-make -j4
+make -j12
 make html
 make check 2>&1 | tee gmp-check-log
 awk '/# PASS:/{total+=$3} ; END{print total}' gmp-check-log
@@ -547,7 +547,7 @@ pushd ${PK_MPFR}
             --enable-thread-safe \
             --docdir=/usr/share/doc/mpfr-4.1.0
 	
-make -j4
+make -j12
 make html
 make check
 
@@ -569,7 +569,7 @@ pushd ${PK_MPC}
             --disable-static \
             --docdir=/usr/share/doc/mpc-1.2.1
 
-make -j4
+make -j12
 make html
 #make check
 
@@ -592,7 +592,7 @@ pushd ${PK_ATTR}
             --sysconfdir=/etc \
             --docdir=/usr/share/doc/attr-2.5.1
 
-make -j4
+make -j12
 #make check
 make install
 
@@ -611,7 +611,7 @@ pushd ${PK_ACL}
             --disable-static      \
             --docdir=/usr/share/doc/acl-2.3.1
 
-make -j4
+make -j12
 make install
 
 popd
@@ -659,7 +659,7 @@ touch /usr/bin/passwd
             --disable-static  \
             --with-group-name-max-length=32
 
-make -j4
+make -j12
 make exec_prefix=/usr install
 make -C man install-man
 
