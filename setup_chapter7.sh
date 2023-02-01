@@ -62,9 +62,9 @@ rm -rf 'bison-3.8.2'
 
 
 # Perl-5.36.0		1.6 SBU	282MB	
-tar -xf perl-5.36.tar.xz
-echo 'start building  perl-5.36'
-pushd 'perl-5.36'
+tar -xf perl-5.36.0.tar.xz
+echo 'start building  perl-5.36.0'
+pushd 'perl-5.36.0'
 
 sh Configure -des                                        \
              -Dprefix=/usr                               \
@@ -80,8 +80,8 @@ make -j4
 make install
 
 popd
-rm -rf 'perl-5.36'
-# build-perl-5.36 ends 
+rm -rf 'perl-5.36.0'
+# build-perl-5.36.0 ends 
 
 
 
