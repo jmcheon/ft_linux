@@ -77,7 +77,7 @@ rm -rf ${PK_MAN_PAGES}
 
 
 # Iana-Etc-20220812	0.1 SBU	4.8MB
-tar -xf ${PK_IANA_ETC}.tar.xz
+tar -xf ${PK_IANA_ETC}.tar.gz
 echo "start building  ${PK_IANA_ETC}"
 pushd ${PK_IANA_ETC}
 
