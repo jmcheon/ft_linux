@@ -193,7 +193,7 @@ zic -d $ZONEINFO -p America/New_York
 unset ZONEINFO
 
 tzselect
-ln -sfv /usr/share/zoneinfo/<xxx> /etc/localtime
+ln -sfv /usr/share/zoneinfo/France /etc/localtime
 
 cat > /etc/ld.so.conf << "EOF"
 # Begin /etc/ld.so.conf
